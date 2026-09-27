@@ -4,12 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>House Wiring Material Estimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#141414; --card:#1d1d1d; --border:#333; --border-soft:#2a2a2a;
-  --accent:#e8622c; --accent2:#25b06a;
+  --bg:#141414; --bg2:#191919; --card:#1d1d1d; --border:#333; --border-soft:#2a2a2a;
+  --accent:#e8622c; --accent-dim:#b84e24; --accent2:#25b06a;
   --text:#e9e5e0; --muted:#9a9590; --muted2:#767068;
   --input-bg:#101010;
+  --font-display:'Oswald',system-ui,sans-serif;
+  --font-body:'Inter','Segoe UI',Roboto,system-ui,-apple-system,sans-serif;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -18,34 +23,110 @@
 html{scroll-padding-top:env(safe-area-inset-top,0px);}
 html,body{background:var(--bg);}
 body{
-  margin:0;font-family:'Segoe UI',Roboto,system-ui,-apple-system,sans-serif;
+  margin:0;font-family:var(--font-body);
   color:var(--text);padding:20px 14px 40px;
+  background:
+    radial-gradient(circle at 14px 14px, rgba(232,98,44,0.05) 1.5px, transparent 1.5px),
+    var(--bg);
+  background-size: 28px 28px;
 }
 .wrap{max-width:760px;margin:0 auto;}
 .header{
   display:flex;justify-content:space-between;align-items:flex-start;
-  border-bottom:2px solid var(--accent);padding-bottom:14px;margin-bottom:18px;
+  border-bottom:2px solid var(--accent);padding-bottom:16px;margin-bottom:18px;
   gap:10px;flex-wrap:wrap;
 }
-.brand h1{margin:0;font-size:1.3rem;color:var(--accent);font-weight:700;}
-.contact{text-align:right;font-size:0.85rem;color:var(--muted);line-height:1.6;}
+.brand{display:flex;align-items:center;gap:12px;}
+.logo-wrap{
+  width:48px;height:48px;border-radius:10px;border:1.5px dashed var(--border);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+  background:#1a1a1a;overflow:hidden;transition:border-color 0.15s ease;
+}
+.logo-wrap:hover{border-color:var(--accent);}
+.logo-img{width:100%;height:100%;object-fit:cover;}
+.logo-placeholder{color:var(--muted2);font-size:0.65rem;text-align:center;line-height:1.2;padding:2px;}
+.est-date{color:var(--muted2);font-size:0.78rem;margin:-14px 0 18px 2px;font-weight:500;}
+.brand h1{margin:0;font-family:var(--font-display);font-size:1.5rem;color:var(--text);font-weight:600;letter-spacing:0.01em;}
+.contact{text-align:right;font-size:0.85rem;color:var(--muted);line-height:1.7;}
 .contact input{
   background:transparent;border:none;color:var(--muted);font-size:0.85rem;
-  text-align:right;width:170px;
+  text-align:right;width:170px;font-family:var(--font-body);
 }
 .title-bar{
-  background:#2a2a2a;color:#fff;font-weight:700;font-size:1.15rem;
-  padding:10px 14px;border-radius:4px;margin-bottom:4px;
+  background:linear-gradient(135deg,#2d2d2d,#232323);color:#fff;font-weight:600;font-size:1.2rem;
+  font-family:var(--font-display);letter-spacing:0.015em;
+  padding:14px 16px;border-radius:8px;margin-bottom:6px;
+  border-left:4px solid var(--accent);
 }
 .subtitle{color:var(--muted2);font-size:0.85rem;margin:0 0 18px 2px;}
 
 .card{
-  background:var(--card);border:1px solid var(--border-soft);border-radius:8px;
+  background:var(--card);border:1px solid var(--border-soft);border-radius:10px;
   padding:18px;margin-bottom:18px;
+  box-shadow:0 1px 0 rgba(255,255,255,0.02) inset, 0 4px 14px rgba(0,0,0,0.18);
 }
 .card h2{
-  margin:0 0 14px;font-size:1.05rem;color:var(--accent);font-weight:700;
+  margin:0 0 14px;font-family:var(--font-display);font-size:1.05rem;color:var(--text);font-weight:600;
+  padding-left:11px;border-left:3px solid var(--accent);letter-spacing:0.01em;
 }
+
+.view-selected-btn{
+  width:100%;margin-bottom:0;background:#262626;border:1px solid var(--border);
+  color:var(--text);border-radius:8px;padding:12px 14px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.view-selected-btn .vsb-label{font-size:0.88rem;font-weight:600;}
+.view-selected-btn .vsb-summary{font-size:0.8rem;color:var(--muted);font-weight:500;}
+.view-selected-btn .vsb-summary #quickTotal{color:var(--accent2);font-weight:700;}
+.view-selected-btn:hover{background:#333;}
+.search-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.search-input{
+  flex:1;min-width:160px;background:var(--input-bg);border:1px solid var(--border);
+  border-radius:20px;color:var(--text);padding:9px 14px;font-size:0.85rem;
+}
+.search-input:focus{outline:none;border-color:var(--accent);}
+.cat-action-btn{
+  background:#262626;border:1px solid var(--border);color:var(--text);
+  border-radius:20px;padding:9px 14px;font-size:0.8rem;font-weight:600;cursor:pointer;white-space:nowrap;
+}
+.cat-action-btn:hover{background:#333;}
+.search-empty{color:var(--muted2);font-size:0.85rem;text-align:center;padding:10px 4px;}
+
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+}
+.modal-card{
+  background:var(--card);border:1px solid var(--border-soft);border-radius:10px;
+  width:100%;max-width:480px;max-height:82vh;display:flex;flex-direction:column;overflow:hidden;
+}
+.modal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 16px;border-bottom:1px solid var(--border-soft);
+}
+.modal-header h2{margin:0;font-family:var(--font-display);font-size:1.1rem;color:var(--text);font-weight:600;}
+.modal-close{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:2px 6px;}
+.modal-close:hover{color:var(--text);}
+.modal-body{overflow-y:auto;padding:6px 16px;flex:1;}
+.modal-empty{color:var(--muted2);font-size:0.88rem;text-align:center;padding:24px 4px;}
+.modal-cat-label{
+  color:var(--accent);font-family:var(--font-display);font-size:0.8rem;font-weight:500;
+  letter-spacing:0.01em;padding:12px 0 4px;
+}
+.modal-item-row{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:9px 0;border-bottom:1px solid #262626;font-size:0.88rem;
+}
+.modal-item-row:last-child{border-bottom:none;}
+.modal-item-name{flex:1;}
+.modal-item-qty{color:var(--muted2);font-size:0.8rem;white-space:nowrap;}
+.modal-item-total{font-weight:600;white-space:nowrap;}
+.modal-footer{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:14px 16px;border-top:1px solid var(--border-soft);font-size:0.95rem;
+}
+.modal-footer strong{color:var(--accent2);font-size:1.05rem;}
+.modal-footer .btn{flex:0 0 auto;min-width:auto;padding:9px 18px;}
 .field-row{display:flex;gap:16px;flex-wrap:wrap;}
 .field{flex:1;min-width:220px;}
 .field label{display:block;font-size:0.8rem;color:var(--muted);margin-bottom:6px;}
@@ -97,9 +178,9 @@ th.unit-col{color:var(--muted);font-weight:600;}
 }
 .sum-row .amt{color:var(--text);font-weight:500;}
 .sum-row.divider{border-top:1px solid var(--border-soft);margin-top:4px;padding-top:14px;}
-.grand{font-size:1.3rem;font-weight:700;color:#fff;}
+.grand{font-family:var(--font-display);font-size:1.5rem;font-weight:600;color:#fff;}
 .grand .amt{color:var(--accent2);}
-.balance{font-size:1.3rem;font-weight:700;}
+.balance{font-family:var(--font-display);font-size:1.5rem;font-weight:600;}
 .balance .amt{color:var(--accent);}
 
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
@@ -114,6 +195,10 @@ th.unit-col{color:var(--muted);font-weight:600;}
   padding:40px;font-family:Arial,Helvetica,sans-serif;
 }
 .print-template h1{margin:0 0 8px;font-size:1.7rem;font-weight:700;color:#111;}
+.pt-header-row{display:flex;align-items:center;gap:14px;}
+.pt-logo{width:64px;height:64px;object-fit:cover;border-radius:8px;flex-shrink:0;}
+.pt-header-text{flex:1;}
+.pt-header-text h1{margin:0 0 6px;}
 .print-template .pt-meta{font-size:0.92rem;color:#333;margin-bottom:3px;}
 .print-template .pt-date{font-size:0.9rem;color:#333;margin:14px 0 10px;padding-top:10px;border-top:1px solid #333;}
 .print-table{width:100%;border-collapse:collapse;margin-bottom:18px;table-layout:fixed;}
@@ -142,14 +227,76 @@ th.unit-col{color:var(--muted);font-weight:600;}
   background:#262626;color:var(--text);font-size:0.92rem;font-weight:600;cursor:pointer;
   text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
 }
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
-.btn.whatsapp{background:#22a559;border-color:#22a559;color:#fff;}
-.btn:hover{filter:brightness(1.08);}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-dim));border-color:var(--accent);color:#fff;box-shadow:0 3px 10px rgba(232,98,44,0.25);}
+.btn.whatsapp{background:#22a559;border-color:#22a559;color:#fff;box-shadow:0 3px 10px rgba(34,165,89,0.2);}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.btn:active{transform:translateY(0);}
 
-@media(max-width:520px){
-  thead th.rate-col{display:none;}
-  td.rate-col{display:none;}
-  .rate-input{width:56px;}
+.mat-header-row{
+  display:grid;grid-template-columns:1fr 92px 68px 88px 88px;gap:6px;align-items:center;
+  padding:4px 6px 10px;border-bottom:1px solid var(--border-soft);
+  font-size:0.78rem;color:var(--muted);font-weight:600;
+}
+.mat-header-row .num{text-align:center;}
+.mat-header-row .right{text-align:right;}
+
+.cat-section{border-bottom:1px solid var(--border-soft);}
+.cat-section:last-child{border-bottom:none;}
+.cat-toggle{
+  width:100%;display:flex;align-items:center;gap:10px;background:none;border:none;
+  padding:14px 8px;cursor:pointer;text-align:left;border-radius:6px;transition:background 0.15s ease;
+}
+.cat-toggle:hover{background:#242424;}
+.cat-toggle .cat-name{
+  color:var(--text);font-family:var(--font-display);font-size:0.85rem;font-weight:500;
+  letter-spacing:0.01em;flex:1;
+}
+.cat-section.open .cat-toggle .cat-name{color:var(--accent);}
+.cat-toggle .cat-count{color:var(--muted2);font-size:0.78rem;flex:1;}
+.cat-toggle .chevron{color:var(--muted);font-size:0.8rem;transition:transform 0.15s ease;}
+.cat-section.open .cat-toggle .chevron{transform:rotate(90deg);color:var(--accent);}
+.cat-body{display:none;}
+.cat-section.open .cat-body{display:block;}
+
+.mat-row{
+  display:grid;grid-template-columns:1fr 92px 68px 88px 88px;gap:6px;align-items:center;
+  padding:10px 6px;border-bottom:1px solid #262626;
+}
+.mat-row:last-child{border-bottom:none;}
+.mat-row .num{display:flex;justify-content:center;}
+.mat-row .row-total{text-align:right;font-weight:600;font-size:0.9rem;white-space:nowrap;color:var(--accent2);}
+
+@media(max-width:560px){
+  .mat-header-row,.mat-row{grid-template-columns:1fr 84px 56px 80px;}
+  .mat-header-row .rate-col,.mat-row .rate-col{display:none;}
+}
+
+.cfg-wrap{padding:10px 6px 4px;}
+.cfg-picker{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  background:#1a1a1a;border:1px solid var(--border-soft);border-radius:10px;padding:10px;margin-bottom:14px;
+}
+.cfg-select{
+  flex:1 1 120px;min-width:110px;background:var(--input-bg);border:1px solid var(--border);
+  border-radius:20px;color:var(--text);padding:8px 12px;font-size:0.85rem;
+}
+.cfg-select:focus{outline:none;border-color:var(--accent);}
+.cfg-qty-wrap{display:flex;align-items:center;gap:6px;}
+.cfg-qty-wrap label{font-size:0.78rem;color:var(--muted);}
+.cfg-qty-wrap input{
+  width:56px;background:var(--input-bg);border:1px solid var(--border);border-radius:20px;
+  color:var(--text);padding:8px 10px;text-align:center;font-size:0.85rem;
+}
+.cfg-add-btn{
+  background:linear-gradient(135deg,var(--accent),var(--accent-dim));border:1px solid var(--accent);color:#fff;border-radius:20px;
+  padding:9px 16px;font-size:0.85rem;font-weight:600;cursor:pointer;white-space:nowrap;
+}
+.cfg-add-btn:hover{filter:brightness(1.08);}
+.cfg-rows{border-top:1px solid var(--border-soft);}
+.cfg-empty{color:var(--muted2);font-size:0.85rem;padding:14px 4px;text-align:center;}
+.cfg-remove{
+  background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.8rem;
+  margin-left:8px;padding:2px 4px;
 }
 
 
@@ -159,7 +306,14 @@ th.unit-col{color:var(--muted);font-weight:600;}
 <div class="wrap">
 
   <div class="header">
-    <div class="brand"><h1>Alatf Husain</h1></div>
+    <div class="brand">
+      <div class="logo-wrap" id="logoWrap" onclick="document.getElementById('logoInput').click()">
+        <img id="logoPreview" class="logo-img" style="display:none;" alt="Logo">
+        <span id="logoPlaceholder" class="logo-placeholder">+ Logo</span>
+      </div>
+      <input type="file" id="logoInput" accept="image/*" style="display:none;" onchange="handleLogoUpload(event)">
+      <h1>Alatf Husain</h1>
+    </div>
     <div class="contact">
       <input id="phone" placeholder="Phone number" value="7091328594">
       <br>
@@ -169,6 +323,7 @@ th.unit-col{color:var(--muted);font-weight:600;}
 
   <div class="title-bar">House Wiring Material List Estimate</div>
   <p class="subtitle">Material chunein aur quantity daalein — estimate turant ban jayega</p>
+  <p class="est-date" id="estimateDateDisplay"></p>
 
   <div class="card">
     <h2>Customer / Site</h2>
@@ -186,18 +341,24 @@ th.unit-col{color:var(--muted);font-weight:600;}
 
   <div class="card">
     <h2>Wiring Material List</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Material</th>
-          <th class="num">Qty</th>
-          <th class="unit-col">Unit</th>
-          <th class="num rate-col">Rate (₹)</th>
-          <th class="right">Total</th>
-        </tr>
-      </thead>
-      <tbody id="itemsBody"></tbody>
-    </table>
+    <div class="search-row">
+      <input type="text" id="itemSearch" class="search-input" placeholder="🔍 Material search karein…" oninput="filterCategories(this.value)">
+      <button type="button" class="cat-action-btn" onclick="expandAllCategories()">Expand All</button>
+      <button type="button" class="cat-action-btn" onclick="collapseAllCategories()">Collapse All</button>
+    </div>
+    <div id="searchEmptyMsg" class="search-empty" style="display:none;">Koi material match nahi hua.</div>
+    <div class="mat-header-row">
+      <div>Material</div>
+      <div class="num">Qty</div>
+      <div class="unit-col">Unit</div>
+      <div class="num rate-col">Rate (₹)</div>
+      <div class="right">Total</div>
+    </div>
+    <div id="categoriesContainer"></div>
+    <button type="button" class="btn view-selected-btn" onclick="showSelectedItems()">
+      <span class="vsb-label">📝 Selected Items Dekhein</span>
+      <span class="vsb-summary" id="quickSummary">0 items added &nbsp;•&nbsp; <span id="quickTotal">₹0</span></span>
+    </button>
   </div>
 
   <div class="card summary">
@@ -241,17 +402,37 @@ th.unit-col{color:var(--muted);font-weight:600;}
   <div class="actions">
     <button class="btn primary" id="pdfBtn" onclick="saveAsPDF()">Save as PDF</button>
     <button class="btn" id="jpegBtn" onclick="saveAsJPEG()">Save as JPEG</button>
-    <a class="btn whatsapp" id="waLink" href="#" target="_blank" rel="noopener" onclick="return prepWhatsApp()">📱 WhatsApp</a>
+    <button class="btn whatsapp" id="waLink" onclick="prepWhatsApp()">📱 WhatsApp</button>
+    <button class="btn" id="copyBtn" onclick="copyEstimateText()">📋 Copy Text</button>
     <button class="btn" id="resetBtn" onclick="handleResetClick()">Reset</button>
   </div>
   <div id="statusMsg" style="text-align:center;font-size:0.82rem;color:var(--muted);margin-top:8px;min-height:1.2em;"></div>
 
 </div>
 
+<div id="selectedItemsModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeSelectedItems()">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2>Selected Items</h2>
+      <button type="button" class="modal-close" onclick="closeSelectedItems()">✕</button>
+    </div>
+    <div class="modal-body" id="selectedItemsBody"></div>
+    <div class="modal-footer">
+      <span>Total: <strong id="selectedItemsTotal">₹0</strong></span>
+      <button type="button" class="btn primary" onclick="closeSelectedItems()">Band Karein</button>
+    </div>
+  </div>
+</div>
+
 <!-- Hidden clean export template (white background, for PDF/JPEG capture) -->
 <div id="printTemplate" class="print-template">
-  <h1>House Wiring Material Estimate</h1>
-  <div class="pt-meta" id="ptContractor">Alatf Husain | Ph: 7091328594 | Koderma, Jharkhand</div>
+  <div class="pt-header-row">
+    <img id="ptLogo" class="pt-logo" style="display:none;" alt="Logo">
+    <div class="pt-header-text">
+      <h1>House Wiring Material Estimate</h1>
+      <div class="pt-meta" id="ptContractor">Alatf Husain | Ph: 7091328594 | Koderma, Jharkhand</div>
+    </div>
+  </div>
   <div class="pt-meta" id="ptCustomerSite"></div>
   <div class="pt-date" id="ptDate"></div>
   <table class="print-table">
@@ -293,74 +474,324 @@ th.unit-col{color:var(--muted);font-weight:600;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 const ITEMS = [
-  // Wires
-  {id:'wire075',name:'Wire 0.75 sqmm', unit:'per meter', rate:7, cat:'Wires'},
-  {id:'wire1',  name:'Wire 1 sqmm',   unit:'per meter', rate:9, cat:'Wires'},
-  {id:'wire15', name:'Wire 1.5 sqmm', unit:'per meter', rate:12, cat:'Wires'},
-  {id:'wire25', name:'Wire 2.5 sqmm', unit:'per meter', rate:18, cat:'Wires'},
-  {id:'wire4',  name:'Wire 4 sqmm',   unit:'per meter', rate:28, cat:'Wires'},
-  {id:'wire6',  name:'Wire 6 sqmm',   unit:'per meter', rate:42, cat:'Wires'},
 
-  // Conduit & Casing
-  {id:'conduit',name:'PVC conduit pipe', unit:'per meter', rate:20, cat:'Conduit & Casing'},
-  {id:'bend',   name:'PVC bend', unit:'per piece', rate:10, cat:'Conduit & Casing'},
-  {id:'lintelbend', name:'Lintel bend', unit:'per piece', rate:15, cat:'Conduit & Casing'},
-  {id:'pvcjb1', name:'PVC junction box (1 way)', unit:'per piece', rate:20, cat:'Conduit & Casing'},
-  {id:'pvcjb2', name:'PVC junction box (2 way)', unit:'per piece', rate:25, cat:'Conduit & Casing'},
-  {id:'pvcjb3', name:'PVC junction box (3 way)', unit:'per piece', rate:30, cat:'Conduit & Casing'},
-  {id:'pvcjb4', name:'PVC junction box (4 way)', unit:'per piece', rate:35, cat:'Conduit & Casing'},
-  {id:'casing', name:'Casing-capping', unit:'per meter', rate:35, cat:'Conduit & Casing'},
-  {id:'clip10', name:'Cable clip (10mm)', unit:'per packet', rate:40, cat:'Conduit & Casing'},
-  {id:'clip15', name:'Cable clip (15mm)', unit:'per packet', rate:50, cat:'Conduit & Casing'},
-  {id:'casingpin', name:'Batten pin', unit:'per piece', rate:1, cat:'Conduit & Casing'},
-  {id:'blackscrew', name:'Black screw (1.5 inch)', unit:'per piece', rate:1, cat:'Conduit & Casing'},
-  {id:'rawlplug', name:'Rawl plug (wall plug)', unit:'per piece', rate:1, cat:'Conduit & Casing'},
-  {id:'ceilingrose', name:'Ceiling rose', unit:'per piece', rate:20, cat:'Conduit & Casing'},
-  {id:'coupling', name:'Coupling', unit:'per piece', rate:8, cat:'Conduit & Casing'},
-  {id:'doctorjoint', name:'Doctor joint', unit:'per piece', rate:10, cat:'Conduit & Casing'},
-  {id:'elbowjoint', name:'Elbow joint', unit:'per piece', rate:8, cat:'Conduit & Casing'},
-  {id:'externalbend', name:'External bend', unit:'per piece', rate:10, cat:'Conduit & Casing'},
-  {id:'holderbox', name:'Holder box', unit:'per piece', rate:15, cat:'Conduit & Casing'},
-  {id:'internalbend', name:'Internal bend', unit:'per piece', rate:10, cat:'Conduit & Casing'},
-  {id:'roundblock', name:'Round block', unit:'per piece', rate:15, cat:'Conduit & Casing'},
-  {id:'tjoint', name:'T-joint', unit:'per piece', rate:10, cat:'Conduit & Casing'},
 
-  // Switches & Sockets
-  {id:'switch', name:'Modular switch', unit:'per piece', rate:40, cat:'Switches & Sockets'},
-  {id:'sock5',  name:'5A socket', unit:'per piece', rate:45, cat:'Switches & Sockets'},
-  {id:'sock15', name:'15A socket', unit:'per piece', rate:90, cat:'Switches & Sockets'},
-  {id:'plate',  name:'Switch board / plate', unit:'per piece', rate:60, cat:'Switches & Sockets'},
-  {id:'box',    name:'Junction / concealed box', unit:'per piece', rate:35, cat:'Switches & Sockets'},
-  {id:'holder', name:'Bulb holder', unit:'per piece', rate:25, cat:'Switches & Sockets'},
-
-  // MCB & DB
-  {id:'mcb6',   name:'MCB 6A', unit:'per piece', rate:90, cat:'MCB & DB'},
-  {id:'mcb10',  name:'MCB 10A', unit:'per piece', rate:95, cat:'MCB & DB'},
-  {id:'mcb16',  name:'MCB 16A', unit:'per piece', rate:100, cat:'MCB & DB'},
-  {id:'mcb20',  name:'MCB 20A', unit:'per piece', rate:110, cat:'MCB & DB'},
-  {id:'mcb25',  name:'MCB 25A', unit:'per piece', rate:120, cat:'MCB & DB'},
-  {id:'mcb32',  name:'MCB 32A', unit:'per piece', rate:135, cat:'MCB & DB'},
-  {id:'mcb40',  name:'MCB 40A', unit:'per piece', rate:160, cat:'MCB & DB'},
-  {id:'mcb50',  name:'MCB 50A', unit:'per piece', rate:190, cat:'MCB & DB'},
-  {id:'mcb63',  name:'MCB 63A', unit:'per piece', rate:220, cat:'MCB & DB'},
-  {id:'isolator', name:'Isolator', unit:'per piece', rate:250, cat:'MCB & DB'},
-  {id:'rccb',   name:'RCCB', unit:'per piece', rate:650, cat:'MCB & DB'},
-  {id:'dbpvc2', name:'MCB box - PVC (2 way)', unit:'per piece', rate:120, cat:'MCB & DB'},
-  {id:'dbpvc4', name:'MCB box - PVC (4 way)', unit:'per piece', rate:180, cat:'MCB & DB'},
-  {id:'dbpvc6', name:'MCB box - PVC (6 way)', unit:'per piece', rate:250, cat:'MCB & DB'},
-  {id:'dbpvc8', name:'MCB box - PVC (8 way)', unit:'per piece', rate:320, cat:'MCB & DB'},
-  {id:'dbmetal2', name:'MCB box - Metal (2 way)', unit:'per piece', rate:200, cat:'MCB & DB'},
-  {id:'dbmetal4', name:'MCB box - Metal (4 way)', unit:'per piece', rate:320, cat:'MCB & DB'},
-  {id:'dbmetal6', name:'MCB box - Metal (6 way)', unit:'per piece', rate:420, cat:'MCB & DB'},
-  {id:'dbmetal8', name:'MCB box - Metal (8 way)', unit:'per piece', rate:520, cat:'MCB & DB'},
-  {id:'dbmetal12', name:'MCB box - Metal (12 way)', unit:'per piece', rate:700, cat:'MCB & DB'},
-  {id:'db4',    name:'DB / distribution box (4-way)', unit:'per piece', rate:450, cat:'MCB & DB'},
-
-  // Other
-  {id:'tape',   name:'Insulation tape', unit:'per roll', rate:15, cat:'Other'},
+  // Plug & Sockets
+  // MCB Box
 ];
 
-const STORE_KEY = 'wiringMaterialEstimate_v1';
+// Explicit display order of every category (regular + configurator-driven)
+const CATEGORY_ORDER = [
+  'Electrical Wire & Cable',
+  'Conduit Pipe & Wiring Accessories',
+  'Junction Box',
+  'Casing Capping & Wiring Accessories',
+  'Switch Boards, Open Wiring Board',
+  'Switch & Switchboard Items',
+  'Plug & Sockets',
+  'Bulb & Lighting',
+  'Holders & Lighting Accessories',
+  'Fan & Ventilation Items',
+  'Fan Accessories',
+  'Metal Box',
+  'Modular Plate',
+  'MCB, RCCB & Distribution Items',
+  'MCB Box',
+  'Other',
+  'Earthing Materials'
+];
+
+// Categories that use the Type/Pole/Mode/Rating picker instead of a flat list
+const CONFIGURATORS = {
+  'Other': {
+    unit: 'per piece',
+    unitByType: {'Insulation Tape (Red/Yellow/Black)':'per roll','Cable Tie':'per packet'},
+    fields: [
+      { key:'type', label:'Type', options:['Tube Light Bracket','Insulation Tape (Red/Yellow/Black)','Chalk Stick (For Marking)','Cable Tie','Cable Gland','Wire Connector','Terminal Block','Connector Strip','Cable Lug','Heat Shrink Sleeve','Wire Ferrule','PVC Solvent Cement'] },
+      { key:'size', label:'Size', options:['PG7','PG9','PG11','PG13.5','PG16','PG21'], showFor:['Cable Gland'] }
+    ],
+    fieldDefaults: {
+      size: { 'Cable Gland':'PG13.5' }
+    },
+    baseRate: {
+      'Tube Light Bracket':20,'Insulation Tape (Red/Yellow/Black)':15,'Chalk Stick (For Marking)':2,
+      'Cable Tie':30,'Cable Gland':15,'Wire Connector':5,'Terminal Block':10,'Connector Strip':15,
+      'Cable Lug':5,'Heat Shrink Sleeve':8,'Wire Ferrule':3,'PVC Solvent Cement':60
+    }
+  },
+  'Bulb & Lighting': {
+    unit: 'per piece',
+    fields: [
+      { key:'type', label:'Type', options:['Bulb','Tube Light','Ceiling Light','Ceiling Light (Square)','Ceiling Surface Light','Tube Light (Color)','Ceiling Light (Color)','Night Bulb','DC Bulb','Strip Light','LED Strip Adapter','Wall Light','Pendant Light','Chandelier Light','Staircase Sensor Light','COB Spot Light','LED Flood Light'] },
+      { key:'watts', label:'Watts', options:['3W','5W','7W','9W','12W','15W','18W','20W','23W','30W','40W','50W','70W','100W','150W'] }
+    ],
+    fieldDefaults: {
+      watts: {
+        'Bulb':'9W','Tube Light':'20W','Ceiling Light':'18W','Ceiling Light (Square)':'18W',
+        'Ceiling Surface Light':'23W','Tube Light (Color)':'20W','Ceiling Light (Color)':'18W',
+        'Night Bulb':'3W','DC Bulb':'12W','Strip Light':'12W','LED Strip Adapter':'30W',
+        'Wall Light':'12W','Pendant Light':'15W','Chandelier Light':'40W',
+        'Staircase Sensor Light':'5W','COB Spot Light':'5W','LED Flood Light':'50W'
+      }
+    },
+    baseRate: {
+      'Bulb':25,'Tube Light':150,'Ceiling Light':250,'Ceiling Light (Square)':280,'Ceiling Surface Light':300,
+      'Tube Light (Color)':200,'Ceiling Light (Color)':320,'Night Bulb':30,'DC Bulb':60,'Strip Light':120,
+      'LED Strip Adapter':150,'Wall Light':350,'Pendant Light':450,'Chandelier Light':1500,
+      'Staircase Sensor Light':400,'COB Spot Light':200,'LED Flood Light':450
+    }
+  },
+  'Fan & Ventilation Items': {
+    unit: 'per piece',
+    fields: [
+      { key:'type', label:'Type', options:['Ceiling Fan','BLDC Ceiling Fan','Table Fan','Wall Fan','Pedestal Fan','Exhaust Fan','Kitchen Exhaust Fan','Decorative Ceiling Fan'] },
+      { key:'watts', label:'Watts', options:['28W','32W','35W','50W','55W','60W','65W','70W','75W','80W','100W','120W','150W'] }
+    ],
+    fieldDefaults: {
+      watts: {
+        'Ceiling Fan':'75W','BLDC Ceiling Fan':'28W','Table Fan':'55W','Wall Fan':'60W',
+        'Pedestal Fan':'65W','Exhaust Fan':'35W','Kitchen Exhaust Fan':'50W','Decorative Ceiling Fan':'80W'
+      }
+    },
+    baseRate: {
+      'Ceiling Fan':1200,'BLDC Ceiling Fan':2200,'Table Fan':900,'Wall Fan':1100,'Pedestal Fan':1400,
+      'Exhaust Fan':700,'Kitchen Exhaust Fan':1500,'Decorative Ceiling Fan':2500
+    }
+  },
+  'Fan Accessories': {
+    unit: 'per piece',
+    fields: [
+      { key:'type', label:'Type', options:['Fan Capacitor','Fan Down Rod','Fan Hook','Fan Clamp','Fan Blade','Fan Motor','Fan Bearing','Fan Shackle Kit','Fan Canopy','Fan Blade Arm'] }
+    ],
+    baseRate: {
+      'Fan Capacitor':60,'Fan Down Rod':150,'Fan Hook':40,'Fan Clamp':50,'Fan Blade':200,
+      'Fan Motor':800,'Fan Bearing':80,'Fan Shackle Kit':60,'Fan Canopy':70,'Fan Blade Arm':90
+    }
+  },
+  'Holders & Lighting Accessories': {
+    unit: 'per piece',
+    fields: [
+      { key:'type', label:'Type', options:['Lamp Holder','Batten Holder','Pendant Holder','Angle Holder','Square Holder','Surface Light Holder'] }
+    ],
+    baseRate: {
+      'Lamp Holder':20,'Batten Holder':22,'Pendant Holder':30,'Angle Holder':25,'Square Holder':28,'Surface Light Holder':30
+    }
+  },
+  'Earthing Materials': {
+    unit: 'per piece',
+    unitByType: {'GI Earthing Strip':'per meter'},
+    fields: [
+      { key:'type', label:'Type', options:['GI Earthing Pipe','Copper Earthing Rod','GI Earthing Strip','Copper Earth Plate','GI Earth Plate','Earth Inspection Chamber','Earth Enhancement Compound','Earthing Electrode Coupler','Earth Busbar'] },
+      { key:'size', label:'Pipe Size', options:['15mm','20mm','25mm'], showFor:['GI Earthing Pipe'] },
+      { key:'length', label:'Rod Length', options:['2 Feet','3 Feet','6 Feet'], showFor:['Copper Earthing Rod'] }
+    ],
+    fieldDefaults: {
+      size: { 'GI Earthing Pipe':'20mm' },
+      length: { 'Copper Earthing Rod':'6 Feet' }
+    },
+    baseRate: {
+      'GI Earthing Pipe':350,'Copper Earthing Rod':600,'GI Earthing Strip':40,'Copper Earth Plate':1200,
+      'GI Earth Plate':450,'Earth Inspection Chamber':250,'Earth Enhancement Compound':300,
+      'Earthing Electrode Coupler':80,'Earth Busbar':180
+    }
+  },
+  'MCB Box': {
+    unit: 'per piece',
+    fields: [
+      { key:'type', label:'Type', options:['MCB Box - PVC (2 Way)','MCB Box - PVC (4 Way)','MCB Box - PVC (6 Way)','MCB Box - PVC (8 Way)','MCB Box - Metal (2 Way)','MCB Box - Metal (4 Way)','MCB Box - Metal (6 Way)','MCB Box - Metal (8 Way)','MCB Box - Metal (12 Way)'] }
+    ],
+    baseRate: {
+      'MCB Box - PVC (2 Way)':120,'MCB Box - PVC (4 Way)':180,'MCB Box - PVC (6 Way)':250,'MCB Box - PVC (8 Way)':320,
+      'MCB Box - Metal (2 Way)':200,'MCB Box - Metal (4 Way)':320,'MCB Box - Metal (6 Way)':420,
+      'MCB Box - Metal (8 Way)':520,'MCB Box - Metal (12 Way)':700
+    }
+  },
+  'Plug & Sockets': {
+    unit: 'per piece',
+    fields: [
+      { key:'type', label:'Type', options:['2-Pin Plug Top 6A','2 Pin Plug Female','3-Pin Plug Top 6A','3-Pin Plug Top 16A','Universal Socket','Mobile Charging Socket','Socket 2Pin 16A','Socket 3Pin 6A','Socket 3Pin 16A','Modular Power Socket 6A','Modular Power Socket 16A'] }
+    ],
+    baseRate: {
+      '2-Pin Plug Top 6A':20,'2 Pin Plug Female':25,'3-Pin Plug Top 6A':25,'3-Pin Plug Top 16A':40,
+      'Universal Socket':50,'Mobile Charging Socket':150,'Socket 2Pin 16A':60,'Socket 3Pin 6A':45,
+      'Socket 3Pin 16A':90,'Modular Power Socket 6A':55,'Modular Power Socket 16A':95
+    }
+  },
+  'Switch & Switchboard Items': {
+    unit: 'per piece',
+    fields: [
+      { key:'type', label:'Type', options:['1-Way Switch','2-Way Switch','Fuse PVC','MCB 1 Way, Modular','Indicator','Bell Push Switch','NC-NO Switch','Fan Regulator','Fan Step Regulator','Light Dimmer','Indicator Light','TV Socket','DP Switch','Touch Switch','Wi-Fi Smart Switch'] }
+    ],
+    baseRate: {
+      '1-Way Switch':40,'2-Way Switch':60,'Fuse PVC':15,'MCB 1 Way, Modular':90,'Indicator':20,
+      'Bell Push Switch':30,'NC-NO Switch':50,'Fan Regulator':80,'Fan Step Regulator':120,
+      'Light Dimmer':150,'Indicator Light':25,'TV Socket':60,'DP Switch':70,'Touch Switch':250,'Wi-Fi Smart Switch':600
+    }
+  },
+  'Casing Capping & Wiring Accessories': {
+    unit: 'per piece',
+    unitByType: {'PVC Casing Capping':'per meter','Cable Clip':'per packet'},
+    fields: [
+      { key:'type', label:'Type', options:['PVC Casing Capping','Doctor Joint','Elbow Joint','T-Joint','External Bend','Internal Bend','Round Block','Round Sheet','Ceiling Rose','Holder Box Square','Batten Clip','Black Screw','Washer','Rawl Plug','Cable Clip','Batten Pin'] },
+      { key:'size', label:'Size', options:['1x0.5"','2x0.75"','3x1"'], showFor:['PVC Casing Capping','Doctor Joint','Elbow Joint','T-Joint','External Bend','Internal Bend'] },
+      { key:'hwsize', label:'Size', options:['1 Inch','1.5 Inch','2 Inch','2.5 Inch'], showFor:['Black Screw','Rawl Plug'] },
+      { key:'washersize', label:'Size', options:['6mm','8mm','10mm','12mm'], showFor:['Washer'] },
+      { key:'clipsize', label:'Size', options:['10mm','15mm','20mm'], showFor:['Cable Clip'] }
+    ],
+    fieldDefaults: {
+      size: {
+        'PVC Casing Capping':'2x0.75"','Doctor Joint':'2x0.75"','Elbow Joint':'2x0.75"',
+        'T-Joint':'2x0.75"','External Bend':'2x0.75"','Internal Bend':'2x0.75"'
+      },
+      hwsize: { 'Black Screw':'1.5 Inch','Rawl Plug':'1.5 Inch' },
+      washersize: { 'Washer':'8mm' },
+      clipsize: { 'Cable Clip':'10mm' }
+    },
+    baseRate: {
+      'PVC Casing Capping':35,'Doctor Joint':10,'Elbow Joint':8,'T-Joint':10,'External Bend':10,
+      'Internal Bend':10,'Round Block':15,'Round Sheet':12,'Ceiling Rose':20,'Holder Box Square':15,
+      'Batten Clip':2,'Black Screw':1,'Washer':1,'Rawl Plug':1,'Cable Clip':40,'Batten Pin':1
+    }
+  },
+  'Junction Box': {
+    unit: 'per piece',
+    fields: [
+      { key:'type', label:'Type', options:['1 Way Junction Box','2 Way Junction Box','3 Way Junction Box','4 Way Junction Box','U-Type Junction Box','Y-Type Junction Box','H-Type Junction Box'] }
+    ],
+    baseRate: {
+      '1 Way Junction Box':20,'2 Way Junction Box':25,'3 Way Junction Box':30,'4 Way Junction Box':35,
+      'U-Type Junction Box':30,'Y-Type Junction Box':30,'H-Type Junction Box':35
+    }
+  },
+  'Conduit Pipe & Wiring Accessories': {
+    unit: 'per piece',
+    unitByType: {'PVC Conduit Pipe':'per meter','Flexible Conduit Pipe':'per meter'},
+    fields: [
+      { key:'type', label:'Type', options:['PVC Conduit Pipe','Flexible Conduit Pipe','PVC Bend','PVC Coupler','PVC Saddles','PVC 2 Pin Saddles','PVC Push Saddles','Lintel Bend'] },
+      { key:'size', label:'Size', options:['16mm','20mm','25mm','32mm'], showFor:['PVC Conduit Pipe','Flexible Conduit Pipe'] }
+    ],
+    fieldDefaults: {
+      size: { 'PVC Conduit Pipe':'20mm','Flexible Conduit Pipe':'20mm' }
+    },
+    baseRate: {
+      'PVC Conduit Pipe':20,'Flexible Conduit Pipe':25,'PVC Bend':10,'PVC Coupler':8,
+      'PVC Saddles':3,'PVC 2 Pin Saddles':4,'PVC Push Saddles':4,'Lintel Bend':15
+    }
+  },
+  'Electrical Wire & Cable': {
+    unit: 'per meter',
+    fields: [
+      { key:'type', label:'Type', options:['Wire','Double Core Cable','Three-Core Cable','Four-Core Cable','Multicore Cable','Aluminium Cable','Flexible Double Wire','Earthing Wire','Solar DC Cable','Coaxial TV Cable','CAT6 LAN Cable','Telephone Wire','CCTV Cable','Flat Submersible Cable','Armoured Cable','Control Cable'] },
+      { key:'size', label:'Size', options:['0.5 sq mm','0.75 sq mm','1 sq mm','1.5 sq mm','2.5 sq mm','4 sq mm','6 sq mm','10 sq mm','16 sq mm','25 sq mm','35 sq mm','50 sq mm'] }
+    ],
+    fieldDefaults: {
+      size: {
+        'Wire':'1.5 sq mm','Double Core Cable':'1.5 sq mm','Three-Core Cable':'2.5 sq mm',
+        'Four-Core Cable':'4 sq mm','Multicore Cable':'2.5 sq mm','Aluminium Cable':'4 sq mm',
+        'Flexible Double Wire':'1.5 sq mm','Earthing Wire':'2.5 sq mm','Solar DC Cable':'4 sq mm',
+        'Coaxial TV Cable':'0.75 sq mm','CAT6 LAN Cable':'0.75 sq mm','Telephone Wire':'0.5 sq mm',
+        'CCTV Cable':'0.75 sq mm','Flat Submersible Cable':'4 sq mm','Armoured Cable':'6 sq mm','Control Cable':'1.5 sq mm'
+      }
+    },
+    baseRate: {
+      'Wire':15,'Double Core Cable':25,'Three-Core Cable':35,'Four-Core Cable':45,'Multicore Cable':40,
+      'Aluminium Cable':30,'Flexible Double Wire':20,'Earthing Wire':18,'Solar DC Cable':35,
+      'Coaxial TV Cable':12,'CAT6 LAN Cable':15,'Telephone Wire':8,'CCTV Cable':12,
+      'Flat Submersible Cable':60,'Armoured Cable':80,'Control Cable':45
+    }
+  },
+  'MCB, RCCB & Distribution Items': {
+    fields: [
+      { key:'type', label:'Type', options:['MCB','Isolator','Fuse Unit','HRC Fuse','ELCB / RCCB','RCBO','Main Switch','Changeover Switch','Changeover Manual','Distribution Board','SPN Distribution Board','TPN Distribution Board','Busbar','Neutral Link','Surge Protection Device','Automatic Voltage Protector','Digital Voltmeter'] },
+      { key:'pole', label:'Pole', options:['1 Pole (SP)','2 Pole (DP)','3 Pole (TP)','4 Pole (TPN)'], showFor:['MCB','Isolator','ELCB / RCCB','RCBO','Main Switch','Changeover Switch','Changeover Manual'] },
+      { key:'rating', label:'Rating', options:['6A','10A','16A','20A','25A','32A','40A','50A','63A','100A'], showFor:['MCB','Isolator','ELCB / RCCB','RCBO','Main Switch','Changeover Switch','Changeover Manual','Fuse Unit','HRC Fuse'] }
+    ],
+    baseRate: {'MCB':100,'Isolator':250,'Fuse Unit':60,'HRC Fuse':80,'ELCB / RCCB':650,'RCBO':750,'Main Switch':200,'Changeover Switch':450,'Changeover Manual':350,'Distribution Board':450,'SPN Distribution Board':550,'TPN Distribution Board':900,'Busbar':150,'Neutral Link':100,'Surge Protection Device':900,'Automatic Voltage Protector':1500,'Digital Voltmeter':350}
+  },
+  'Metal Box': {
+    fields: [
+      { key:'type', label:'Type', options:['Fan Box','Ceiling Light Box','1 mode metal box','2 mode metal box','3 mode metal box','4 mode metal box','6 mode metal box','8 mode metal box (landscape)','8 mode metal box (square)','12 mode metal box','16 mode metal box','18 mode metal box'] }
+    ],
+    baseRate: {
+      'Fan Box':30,'Ceiling Light Box':25,
+      '1 mode metal box':35,'2 mode metal box':45,'3 mode metal box':55,'4 mode metal box':65,
+      '6 mode metal box':90,'8 mode metal box (landscape)':130,'8 mode metal box (square)':120,
+      '12 mode metal box':180,'16 mode metal box':220,'18 mode metal box':260
+    }
+  },
+  'Modular Plate': {
+    fields: [
+      { key:'type', label:'Type', options:['Blank Modular Plate Cover','1 mode plate','2 mode plate','3 mode plate','4 mode plate','6 mode plate','8 mode plate (landscape)','8 mode plate (square)','12 mode plate','16 mode plate','18 mode plate'] }
+    ],
+    baseRate: {
+      'Blank Modular Plate Cover':15,
+      '1 mode plate':35,'2 mode plate':45,'3 mode plate':55,'4 mode plate':65,
+      '6 mode plate':90,'8 mode plate (landscape)':130,'8 mode plate (square)':120,
+      '12 mode plate':180,'16 mode plate':220,'18 mode plate':260
+    }
+  },
+  'Switch Boards, Open Wiring Board': {
+    fields: [
+      { key:'type', label:'Type', options:['Extension Board','Power Board','1 Mode Switch Board PVC','2 Mode Switch Board PVC','3 Mode Switch Board PVC','4 Mode Switch Board PVC','6 Mode Switch Board PVC','8 Mode Metal Switch Board PVC Landscape','8 Mode Switch Board PVC Square','12 Mode Switch Board PVC','16 Mode Switch Board PVC','18 Mode Switch Board PVC'] }
+    ],
+    baseRate: {
+      'Extension Board':250,'Power Board':350,
+      '1 Mode Switch Board PVC':40,'2 Mode Switch Board PVC':55,'3 Mode Switch Board PVC':70,
+      '4 Mode Switch Board PVC':85,'6 Mode Switch Board PVC':120,
+      '8 Mode Metal Switch Board PVC Landscape':180,'8 Mode Switch Board PVC Square':150,
+      '12 Mode Switch Board PVC':220,'16 Mode Switch Board PVC':280,'18 Mode Switch Board PVC':320
+    }
+  }
+};
+
+let configRows = [];
+let configRowSeq = 1;
+
+function slug(s){ return s.replace(/[^a-zA-Z0-9]/g,''); }
+
+function computeConfigRate(catKey, values){
+  const cfg = CONFIGURATORS[catKey];
+  if(cfg.modeRate && values.mode && cfg.modeRate[values.mode] != null) return cfg.modeRate[values.mode];
+  if(cfg.baseRate && values.type && cfg.baseRate[values.type] != null) return cfg.baseRate[values.type];
+  return 50;
+}
+
+function buildConfigLabel(cfg, values){
+  const parts = [];
+  cfg.fields.forEach(f=>{
+    const v = values[f.key];
+    if(v && (!f.showFor || f.showFor.includes(values.type) || f.key==='type')) parts.push(v);
+  });
+  return parts.join(' · ');
+}
+
+function addConfigRow(catKey){
+  const cfg = CONFIGURATORS[catKey];
+  const picker = document.getElementById('picker_'+slug(catKey));
+  const values = {};
+  cfg.fields.forEach(f=>{
+    const sel = picker.querySelector(`[data-field="${f.key}"]`);
+    if(sel) values[f.key] = sel.value;
+  });
+  const qty = 1;
+  const rate = computeConfigRate(catKey, values);
+  const label = buildConfigLabel(cfg, values);
+  const id = 'cfg'+(configRowSeq++);
+  const unit = (cfg.unitByType && cfg.unitByType[values.type]) || cfg.unit || 'per piece';
+  configRows.push({ id, cat: catKey, label, qty, rate, unit });
+  buildTable();
+  recalc();
+}
+
+function removeConfigRow(id){
+  configRows = configRows.filter(r=>r.id!==id);
+  buildTable();
+  recalc();
+}
+
+
+
+const STORE_KEY = 'house_wiring_estimate_v1';
 
 function loadState(){
   try{
@@ -380,41 +811,246 @@ function saveState(){
         id: it.id,
         rate: document.getElementById('rate_'+it.id).value,
         qty: document.getElementById('qty_'+it.id).value
-      }))
+      })),
+      configRows: configRows.map(r=>{
+        const rateEl = document.getElementById('rate_'+r.id);
+        const qtyEl = document.getElementById('qty_'+r.id);
+        return {
+          id: r.id, cat: r.cat, label: r.label, unit: r.unit,
+          rate: rateEl ? rateEl.value : r.rate,
+          qty: qtyEl ? qtyEl.value : r.qty
+        };
+      })
     };
     localStorage.setItem(STORE_KEY, JSON.stringify(state));
   }catch(e){}
 }
 
-function buildTable(){
-  const body = document.getElementById('itemsBody');
-  body.innerHTML = '';
-  let lastCat = null;
-  ITEMS.forEach(it=>{
-    if(it.cat !== lastCat){
-      lastCat = it.cat;
-      const catTr = document.createElement('tr');
-      catTr.className = 'cat-row';
-      catTr.innerHTML = `<td colspan="5">${it.cat}</td>`;
-      body.appendChild(catTr);
+let openCatName = null;
+
+function toggleCategory(headerEl){
+  const section = headerEl.closest('.cat-section');
+  const isOpen = section.classList.contains('open');
+  document.querySelectorAll('.cat-section').forEach(s => s.classList.remove('open'));
+  openCatName = isOpen ? null : section.dataset.cat;
+  if(!isOpen){ section.classList.add('open'); }
+}
+
+function expandAllCategories(){
+  document.querySelectorAll('.cat-section').forEach(s=> s.classList.add('open'));
+}
+
+function collapseAllCategories(){
+  document.querySelectorAll('.cat-section').forEach(s=> s.classList.remove('open'));
+}
+
+function filterCategories(query){
+  const q = query.trim().toLowerCase();
+  const sections = document.querySelectorAll('.cat-section');
+  const emptyMsg = document.getElementById('searchEmptyMsg');
+  if(!q){
+    sections.forEach(s=> s.style.display = '');
+    if(emptyMsg) emptyMsg.style.display = 'none';
+    return;
+  }
+  let anyMatch = false;
+  sections.forEach(s=>{
+    const catName = s.dataset.cat;
+    const cfg = CONFIGURATORS[catName];
+    let matches = catName.toLowerCase().includes(q);
+    if(!matches && cfg){
+      const typeField = cfg.fields.find(f=>f.key==='type');
+      if(typeField){ matches = typeField.options.some(o=> o.toLowerCase().includes(q)); }
     }
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>
-        <div class="item-name">${it.name}</div>
-      </td>
-      <td class="num">
-        <div class="qty-group">
-          <button class="qty-btn" type="button" onclick="stepQty('${it.id}',-1)">−</button>
-          <input class="qty-input" id="qty_${it.id}" type="number" min="0" value="0">
-          <button class="qty-btn" type="button" onclick="stepQty('${it.id}',1)">+</button>
-        </div>
-      </td>
-      <td class="unit-col">${it.unit.replace('per ','')}</td>
-      <td class="num rate-col"><input class="rate-input" id="rate_${it.id}" type="number" min="0" value="${it.rate}"></td>
-      <td class="row-total" id="total_${it.id}">₹0</td>
-    `;
-    body.appendChild(tr);
+    if(!matches){
+      matches = configRows.some(r=> r.cat===catName && r.label.toLowerCase().includes(q));
+    }
+    if(matches){
+      s.style.display = '';
+      s.classList.add('open');
+      anyMatch = true;
+    }else{
+      s.style.display = 'none';
+    }
+  });
+  if(emptyMsg) emptyMsg.style.display = anyMatch ? 'none' : '';
+}
+
+function setEstimateDate(){
+  const el = document.getElementById('estimateDateDisplay');
+  if(!el) return;
+  const d = new Date();
+  const formatted = d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+  el.textContent = 'Estimate Date: ' + formatted;
+}
+
+function handleLogoUpload(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const dataUrl = e.target.result;
+    const img = document.getElementById('logoPreview');
+    const placeholder = document.getElementById('logoPlaceholder');
+    img.src = dataUrl;
+    img.style.display = 'block';
+    if(placeholder) placeholder.style.display = 'none';
+    try{ localStorage.setItem(STORE_KEY+'_logo', dataUrl); }catch(e2){}
+  };
+  reader.readAsDataURL(file);
+}
+
+function restoreLogo(){
+  try{
+    const dataUrl = localStorage.getItem(STORE_KEY+'_logo');
+    if(dataUrl){
+      const img = document.getElementById('logoPreview');
+      const placeholder = document.getElementById('logoPlaceholder');
+      img.src = dataUrl;
+      img.style.display = 'block';
+      if(placeholder) placeholder.style.display = 'none';
+    }
+  }catch(e){}
+}
+
+function renderMatRow(it){
+  const row = document.createElement('div');
+  row.className = 'mat-row';
+  row.innerHTML = `
+    <div class="item-name">${it.name}</div>
+    <div class="num">
+      <div class="qty-group">
+        <button class="qty-btn" type="button" onclick="stepQty('${it.id}',-1)">−</button>
+        <input class="qty-input" id="qty_${it.id}" type="number" min="0" value="0">
+        <button class="qty-btn" type="button" onclick="stepQty('${it.id}',1)">+</button>
+      </div>
+    </div>
+    <div class="unit-col">${it.unit.replace('per ','')}</div>
+    <div class="num rate-col"><input class="rate-input" id="rate_${it.id}" type="number" min="0" value="${it.rate}"></div>
+    <div class="row-total" id="total_${it.id}">₹0</div>
+  `;
+  return row;
+}
+
+function renderConfigItemRow(r){
+  const row = document.createElement('div');
+  row.className = 'mat-row';
+  row.innerHTML = `
+    <div class="item-name">${r.label} <button type="button" class="cfg-remove" onclick="removeConfigRow('${r.id}')" title="Remove">✕</button></div>
+    <div class="num">
+      <div class="qty-group">
+        <button class="qty-btn" type="button" onclick="stepQty('${r.id}',-1)">−</button>
+        <input class="qty-input" id="qty_${r.id}" type="number" min="0" value="${r.qty}">
+        <button class="qty-btn" type="button" onclick="stepQty('${r.id}',1)">+</button>
+      </div>
+    </div>
+    <div class="unit-col">${shortUnit(r.unit||'per piece')}</div>
+    <div class="num rate-col"><input class="rate-input" id="rate_${r.id}" type="number" min="0" value="${r.rate}"></div>
+    <div class="row-total" id="total_${r.id}">₹0</div>
+  `;
+  return row;
+}
+
+function renderConfiguratorBody(catKey){
+  const cfg = CONFIGURATORS[catKey];
+  const wrap = document.createElement('div');
+  wrap.className = 'cfg-wrap';
+
+  const picker = document.createElement('div');
+  picker.className = 'cfg-picker';
+  picker.id = 'picker_'+slug(catKey);
+
+  const selects = {};
+  cfg.fields.forEach(f=>{
+    const sel = document.createElement('select');
+    sel.className = 'cfg-select';
+    sel.dataset.field = f.key;
+    f.options.forEach(opt=>{
+      const o = document.createElement('option');
+      o.value = opt; o.textContent = opt;
+      sel.appendChild(o);
+    });
+    picker.appendChild(sel);
+    selects[f.key] = sel;
+  });
+
+  const addBtn = document.createElement('button');
+  addBtn.type = 'button';
+  addBtn.className = 'cfg-add-btn';
+  addBtn.textContent = '+ Add Item';
+  addBtn.onclick = ()=> addConfigRow(catKey);
+  picker.appendChild(addBtn);
+
+  wrap.appendChild(picker);
+
+  const typeSel = selects['type'];
+  function updateVisibility(){
+    cfg.fields.forEach(f=>{
+      if(f.key==='type') return;
+      const sel = selects[f.key];
+      if(f.showFor){
+        sel.style.display = f.showFor.includes(typeSel.value) ? '' : 'none';
+      }
+      if(cfg.fieldDefaults && cfg.fieldDefaults[f.key] && cfg.fieldDefaults[f.key][typeSel.value] != null){
+        sel.value = cfg.fieldDefaults[f.key][typeSel.value];
+      }
+    });
+  }
+  if(typeSel){ typeSel.addEventListener('change', updateVisibility); updateVisibility(); }
+
+  const rowsList = document.createElement('div');
+  rowsList.className = 'cfg-rows';
+  const rows = configRows.filter(r=>r.cat===catKey);
+  if(rows.length===0){
+    rowsList.innerHTML = '<div class="cfg-empty">Koi item add nahi hua — upar se choose karke "+ Add Item" dabayein.</div>';
+  }else{
+    rows.forEach(r=> rowsList.appendChild(renderConfigItemRow(r)));
+  }
+  wrap.appendChild(rowsList);
+
+  return wrap;
+}
+
+function buildTable(){
+  const container = document.getElementById('categoriesContainer');
+  container.innerHTML = '';
+
+  const itemsByCat = {};
+  ITEMS.forEach(it=>{
+    if(!itemsByCat[it.cat]) itemsByCat[it.cat] = [];
+    itemsByCat[it.cat].push(it);
+  });
+
+  let anyOpen = false;
+  CATEGORY_ORDER.forEach((catName, idx)=>{
+    const isConfigurator = !!CONFIGURATORS[catName];
+    const items = itemsByCat[catName] || [];
+    const rowCount = isConfigurator ? configRows.filter(r=>r.cat===catName).length : items.length;
+
+    const section = document.createElement('div');
+    section.className = 'cat-section';
+    section.dataset.cat = catName;
+    const shouldOpen = openCatName ? (openCatName === catName) : (idx===0);
+    if(shouldOpen){ section.classList.add('open'); anyOpen = true; }
+
+    const header = document.createElement('button');
+    header.type = 'button';
+    header.className = 'cat-toggle';
+    header.onclick = function(){ toggleCategory(this); };
+    header.innerHTML = `<span class="cat-name">${catName}</span><span class="chevron">▸</span>`;
+
+    const body = document.createElement('div');
+    body.className = 'cat-body';
+
+    if(isConfigurator){
+      body.appendChild(renderConfiguratorBody(catName));
+    }else{
+      items.forEach(it=> body.appendChild(renderMatRow(it)));
+    }
+
+    section.appendChild(header);
+    section.appendChild(body);
+    container.appendChild(section);
   });
 }
 
@@ -439,6 +1075,13 @@ function populatePrintTemplate(){
   const location = document.getElementById('location').value || '';
   document.getElementById('ptContractor').textContent = 'Alatf Husain' + (phone ? ' | Ph: '+phone : '') + (location ? ' | '+location : '');
 
+  const ptLogo = document.getElementById('ptLogo');
+  try{
+    const logoDataUrl = localStorage.getItem(STORE_KEY+'_logo');
+    if(logoDataUrl){ ptLogo.src = logoDataUrl; ptLogo.style.display = 'block'; }
+    else{ ptLogo.style.display = 'none'; }
+  }catch(e){ ptLogo.style.display = 'none'; }
+
   const name = document.getElementById('custName').value.trim();
   const addr = document.getElementById('siteAddr').value.trim();
   const csLine = [];
@@ -452,25 +1095,25 @@ function populatePrintTemplate(){
   const rowsBody = document.getElementById('ptRows');
   rowsBody.innerHTML = '';
   let any = false;
-  let lastCat = null;
   const blankMode = document.getElementById('blankRateToggle').checked;
-  ITEMS.forEach(it=>{
-    const qty = parseFloat(document.getElementById('qty_'+it.id).value)||0;
-    if(qty>0){
-      any = true;
-      if(it.cat !== lastCat){
-        lastCat = it.cat;
-        const catTr = document.createElement('tr');
-        catTr.innerHTML = `<td colspan="4" class="pt-cat">${it.cat}</td>`;
-        rowsBody.appendChild(catTr);
+  const entries = getAllEntries();
+  CATEGORY_ORDER.forEach(catName=>{
+    const inCat = entries.filter(it=>it.cat===catName);
+    inCat.forEach(it=>{
+      const qtyEl = document.getElementById('qty_'+it.id);
+      const rateEl = document.getElementById('rate_'+it.id);
+      if(!qtyEl || !rateEl) return;
+      const qty = parseFloat(qtyEl.value)||0;
+      if(qty>0){
+        any = true;
+        const rate = parseFloat(rateEl.value)||0;
+        const rateCell = blankMode ? '' : rate;
+        const totalCell = blankMode ? '' : fmt(rate*qty);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${it.name}</td><td class="num">${qty} ${shortUnit(it.unit)}</td><td class="num">${rateCell}</td><td class="num">${totalCell}</td>`;
+        rowsBody.appendChild(tr);
       }
-      const rate = parseFloat(document.getElementById('rate_'+it.id).value)||0;
-      const rateCell = blankMode ? '' : rate;
-      const totalCell = blankMode ? '' : fmt(rate*qty);
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${it.name}</td><td class="num">${qty} ${shortUnit(it.unit)}</td><td class="num">${rateCell}</td><td class="num">${totalCell}</td>`;
-      rowsBody.appendChild(tr);
-    }
+    });
   });
   if(!any){
     rowsBody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888;">Koi material select nahi kiya gaya</td></tr>';
@@ -515,14 +1158,41 @@ async function getDownloads(){
   try{ return await window.claude.use('downloads'); }catch(e){ return null; }
 }
 
+async function saveBlob(blob, filename){
+  // Try the in-app downloads capability first
+  try{
+    const downloads = await getDownloads();
+    if(downloads){
+      const res = await downloads.save({ filename, data: blob });
+      return { ok: true, res };
+    }
+  }catch(e){
+    if(e && e.code === 'declined'){ return { ok: false, declined: true }; }
+    // fall through to browser fallback
+  }
+  // Fallback: normal browser/mobile download via object URL
+  try{
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url), 8000);
+    return { ok: true, fallback: true };
+  }catch(e){
+    return { ok: false, error: e };
+  }
+}
+
 async function saveAsPDF(){
   const btn = document.getElementById('pdfBtn');
   const orig = btn.textContent;
   btn.textContent = 'Generating…';
   setStatus('PDF taiyar ho raha hai…');
   try{
-    const downloads = await getDownloads();
-    if(!downloads){ setStatus('Save yahan available nahi hai — published link ko naye tab mein kholkar try karein.', true); return; }
     const canvas = await captureCanvas();
     const headerCanvas = await html2canvas(document.getElementById('pageHeaderTemplate'), {
       backgroundColor: '#ffffff',
@@ -573,11 +1243,12 @@ async function saveAsPDF(){
     }
 
     const blob = pdf.output('blob');
-    const res = await downloads.save({ filename: buildFilename('pdf'), data: blob });
-    setStatus(res.status === 'saved' ? 'PDF save ho gaya ✓' : 'PDF bhej diya gaya ✓');
-  }catch(e){
-    if(e && e.code === 'declined'){ setStatus('Save cancel kar diya gaya.'); }
+    const result = await saveBlob(blob, buildFilename('pdf'));
+    if(result.declined){ setStatus('Save cancel kar diya gaya.'); }
+    else if(result.ok){ setStatus('PDF save ho gaya ✓'); }
     else{ setStatus('Save nahi ho paya, dobara try karein.', true); }
+  }catch(e){
+    setStatus('Save nahi ho paya, dobara try karein.', true);
   }finally{
     btn.textContent = orig;
   }
@@ -589,15 +1260,14 @@ async function saveAsJPEG(){
   btn.textContent = 'Generating…';
   setStatus('Image taiyar ho rahi hai…');
   try{
-    const downloads = await getDownloads();
-    if(!downloads){ setStatus('Save yahan available nahi hai — published link ko naye tab mein kholkar try karein.', true); return; }
     const canvas = await captureCanvas();
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.92));
-    const res = await downloads.save({ filename: buildFilename('jpg'), data: blob });
-    setStatus(res.status === 'saved' ? 'Image save ho gayi ✓' : 'Image bhej di gayi ✓');
-  }catch(e){
-    if(e && e.code === 'declined'){ setStatus('Save cancel kar diya gaya.'); }
+    const result = await saveBlob(blob, buildFilename('jpg'));
+    if(result.declined){ setStatus('Save cancel kar diya gaya.'); }
+    else if(result.ok){ setStatus('Image save ho gayi ✓'); }
     else{ setStatus('Save nahi ho paya, dobara try karein.', true); }
+  }catch(e){
+    setStatus('Save nahi ho paya, dobara try karein.', true);
   }finally{
     btn.textContent = orig;
   }
@@ -615,15 +1285,61 @@ function fmt(n){
   return '₹' + Math.round(n).toLocaleString('en-IN');
 }
 
+function getAllEntries(){
+  return ITEMS.concat(configRows.map(r=>({ id:r.id, name:r.label, unit:(r.unit||'per piece'), cat:r.cat })));
+}
+
+function showSelectedItems(){
+  const body = document.getElementById('selectedItemsBody');
+  const entries = getAllEntries();
+  let grandTotal = 0;
+  let html = '';
+  entries.forEach(it=>{
+    const qtyEl = document.getElementById('qty_'+it.id);
+    const rateEl = document.getElementById('rate_'+it.id);
+    const qty = qtyEl ? (parseFloat(qtyEl.value)||0) : 0;
+    if(qty <= 0) return;
+    const rate = parseFloat(rateEl.value)||0;
+    const total = qty*rate;
+    grandTotal += total;
+    html += `<div class="modal-item-row">
+      <span class="modal-item-name">${it.name}</span>
+      <span class="modal-item-qty">${qty} ${shortUnit(it.unit||'per piece')} × ₹${rate}</span>
+      <span class="modal-item-total">${fmt(total)}</span>
+    </div>`;
+  });
+  if(!html){
+    html = '<div class="modal-empty">Abhi tak koi material select nahi kiya gaya.</div>';
+  }
+  body.innerHTML = html;
+  document.getElementById('selectedItemsTotal').textContent = fmt(grandTotal);
+  document.getElementById('selectedItemsModal').style.display = 'flex';
+}
+
+function closeSelectedItems(){
+  document.getElementById('selectedItemsModal').style.display = 'none';
+}
+
 function recalc(){
   let materialTotal = 0;
-  ITEMS.forEach(it=>{
-    const rate = parseFloat(document.getElementById('rate_'+it.id).value)||0;
-    const qty = parseFloat(document.getElementById('qty_'+it.id).value)||0;
+  let itemCount = 0;
+  getAllEntries().forEach(it=>{
+    const rateEl = document.getElementById('rate_'+it.id);
+    const qtyEl = document.getElementById('qty_'+it.id);
+    if(!rateEl || !qtyEl) return;
+    const rate = parseFloat(rateEl.value)||0;
+    let qty = parseFloat(qtyEl.value)||0;
+    if(qty<0){ qty = 0; qtyEl.value = 0; }
     const total = rate*qty;
     materialTotal += total;
-    document.getElementById('total_'+it.id).textContent = fmt(total);
+    if(qty>0) itemCount++;
+    const totalEl = document.getElementById('total_'+it.id);
+    if(totalEl) totalEl.textContent = fmt(total);
   });
+  const quickSummaryEl = document.getElementById('quickSummary');
+  if(quickSummaryEl){
+    quickSummaryEl.innerHTML = `${itemCount} item${itemCount===1?'':'s'} added &nbsp;•&nbsp; <span id="quickTotal">${fmt(materialTotal)}</span>`;
+  }
   const labour = parseFloat(document.getElementById('labourMisc').value)||0;
   const gstPct = parseFloat(document.getElementById('gstPct').value)||0;
   const subtotal = materialTotal + labour;
@@ -661,17 +1377,25 @@ function handleResetClick(){
   btn2.textContent = 'Reset';
   btn2.style.background = '';
   btn2.style.borderColor = '';
-  try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+  try{ localStorage.removeItem(STORE_KEY); localStorage.removeItem(STORE_KEY+'_logo'); }catch(e){}
+  configRows = [];
+  openCatName = null;
   document.getElementById('custName').value='';
   document.getElementById('siteAddr').value='';
   document.getElementById('labourMisc').value=0;
   document.getElementById('gstPct').value=0;
   document.getElementById('advance').value=0;
+  const logoImg = document.getElementById('logoPreview');
+  const logoPlaceholder = document.getElementById('logoPlaceholder');
+  if(logoImg){ logoImg.style.display='none'; logoImg.src=''; }
+  if(logoPlaceholder){ logoPlaceholder.style.display=''; }
+  const searchEl = document.getElementById('itemSearch');
+  if(searchEl){ searchEl.value=''; filterCategories(''); }
   buildTable();
   recalc();
 }
 
-function prepWhatsApp(){
+function buildEstimateText(){
   const name = document.getElementById('custName').value || '(naam nahi diya)';
   const addr = document.getElementById('siteAddr').value || '(address nahi diya)';
   let lines = [];
@@ -679,10 +1403,13 @@ function prepWhatsApp(){
   lines.push('Customer: ' + name);
   lines.push('Site: ' + addr);
   lines.push('');
-  ITEMS.forEach(it=>{
-    const qty = parseFloat(document.getElementById('qty_'+it.id).value)||0;
+  getAllEntries().forEach(it=>{
+    const qtyEl = document.getElementById('qty_'+it.id);
+    const rateEl = document.getElementById('rate_'+it.id);
+    if(!qtyEl || !rateEl) return;
+    const qty = parseFloat(qtyEl.value)||0;
     if(qty>0){
-      const rate = parseFloat(document.getElementById('rate_'+it.id).value)||0;
+      const rate = parseFloat(rateEl.value)||0;
       lines.push(`${it.name} x${qty} = ${fmt(rate*qty)}`);
     }
   });
@@ -690,13 +1417,53 @@ function prepWhatsApp(){
   lines.push('Material total: ' + document.getElementById('materialTotal').textContent);
   lines.push('Grand Total: ' + document.getElementById('grandTotal').textContent);
   lines.push('Balance Due: ' + document.getElementById('balanceDue').textContent);
-  const text = encodeURIComponent(lines.join('\n'));
-  document.getElementById('waLink').href = 'https://wa.me/?text='+text;
-  return true;
+  return lines.join('\n');
+}
+
+function prepWhatsApp(){
+  const text = encodeURIComponent(buildEstimateText());
+  const phone = '917091328594'; // Alatf Husain's WhatsApp number with country code
+  const waUrl = 'https://wa.me/' + phone + '?text=' + text;
+  window.open(waUrl, '_blank', 'noopener');
+  setStatus('WhatsApp khul raha hai… agar na khule to "Copy Text" use karke manually paste karein.');
+}
+
+async function copyEstimateText(){
+  const text = buildEstimateText();
+  try{
+    await navigator.clipboard.writeText(text);
+    setStatus('Estimate text copy ho gaya ✓ ab WhatsApp/SMS mein paste kar dein.');
+  }catch(e){
+    // Fallback for environments without clipboard API
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position='fixed'; ta.style.left='-9999px';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try{
+      document.execCommand('copy');
+      setStatus('Estimate text copy ho gaya ✓ ab WhatsApp/SMS mein paste kar dein.');
+    }catch(e2){
+      setStatus('Copy nahi ho paya, text manually select karke copy karein.', true);
+    }
+    document.body.removeChild(ta);
+  }
 }
 
 function restoreState(){
   const s = loadState();
+  if(s && s.configRows && s.configRows.length){
+    configRows = s.configRows.map(r=>({
+      id: r.id, cat: r.cat, label: r.label, unit: r.unit,
+      qty: parseFloat(r.qty)||0, rate: parseFloat(r.rate)||0
+    }));
+    let maxSeq = 0;
+    configRows.forEach(r=>{
+      const m = /^cfg(\d+)$/.exec(r.id);
+      if(m) maxSeq = Math.max(maxSeq, parseInt(m[1],10));
+    });
+    configRowSeq = maxSeq + 1;
+  }
   buildTable();
   if(s){
     document.getElementById('custName').value = s.custName||'';
@@ -718,6 +1485,8 @@ document.addEventListener('input', function(e){
   if(e.target.tagName === 'INPUT'){ recalc(); }
 });
 
+setEstimateDate();
+restoreLogo();
 restoreState();
 </script>
 </body>
